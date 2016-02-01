@@ -1,1 +1,20 @@
 Genetic algorithms
+
+Application:
+    Scheduling problem
+    Generate random problem instances
+
+Algorithm:
+    Represent population of candidate solutions as array of values
+    While termination condition is not met:
+        Apply fitness evaluation
+        Take certain proportion of fittest individuals
+        Apply genetic operators to create next generation
+
+Details:
+    Approximate fitness function
+    Adaptive GA: adapt p(genetic operator) based on population information
+
+Components:
+    Random problem generator
+    Genetic algorithm implementation
