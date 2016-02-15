@@ -17,3 +17,6 @@ class MAX3SAT:
             raise TypeError("All elements in 'clauses' must be Clause instances.")
 
         self.clauses = clauses
+
+    def __str__(self):
+        return ""

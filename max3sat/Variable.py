@@ -5,3 +5,6 @@ class Variable:
             raise TypeError("'value' must be an alphabetic character.")
 
         self.value = value
+
+    def __str__(self):
+        return self.value

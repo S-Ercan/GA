@@ -1,4 +1,5 @@
 from max3sat.Literal import Literal
+from max3sat.Valuation import Valuation
 
 
 class Clause:
@@ -12,5 +13,18 @@ class Clause:
 
         self.literals = literals
 
-    def is_satisfied(self, truth_assignment):
-        pass
+    def is_satisfied(self, valuation):
+        """
+        :param valuation: truth assignment to use
+        :return: True if valuation satisfies this clause, false otherwise
+        """
+        if not isinstance(valuation, Valuation):
+            raise TypeError("'valuation' must be a Valuation instance.")
+
+        for literal in self.literals:
+            if valuation.get_value_for_literal(literal):
+                return True
+        return False
+
+    def __str__(self):
+        return self.literals

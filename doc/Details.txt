@@ -28,6 +28,6 @@ Components:
 MAXSAT
 
 Create problems consisting of a number of variables v and clauses c
-Clauses contain positive or negative literals
+Clauses contain disjunction of positive/negative literals
 A population consists of a number of individuals having v genes with value 0/1
 Objective function is number of clauses satisfied
