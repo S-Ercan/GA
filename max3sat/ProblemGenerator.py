@@ -1,4 +1,4 @@
 class ProblemGenerator:
 
-    def generateProblem(self):
+    def generate_problem(self):
         pass
