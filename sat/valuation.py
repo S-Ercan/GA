@@ -1,4 +1,4 @@
-from max3sat.Literal import Literal
+from sat.literal import Literal
 
 
 class Valuation:

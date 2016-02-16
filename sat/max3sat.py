@@ -1,5 +1,5 @@
-from max3sat.Clause import Clause
-from max3sat.Variable import Variable
+from sat.clause import Clause
+from sat.variable import Variable
 
 
 class MAX3SAT:

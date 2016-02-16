@@ -1,6 +1,6 @@
 import random
 
-from max3sat.MAX3SAT import MAX3SAT
+from sat.max3sat import MAX3SAT
 
 
 class ProblemGenerator:

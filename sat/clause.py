@@ -1,5 +1,5 @@
-from max3sat.Literal import Literal
-from max3sat.Valuation import Valuation
+from sat.literal import Literal
+from sat.valuation import Valuation
 
 
 class Clause:
