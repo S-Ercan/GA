@@ -5,7 +5,7 @@ from sat.literal import Literal
 from sat.variable import Variable
 
 
-class TestLiteral(unittest.TestCase):
+class TestClause(unittest.TestCase):
 
     def test_create_without_argument_fails(self):
         self.assertRaises(TypeError, lambda l: Clause())
