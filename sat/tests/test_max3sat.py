@@ -8,8 +8,10 @@ from sat.variable import Variable
 
 class TestMAX3SAT(unittest.TestCase):
 
-    variable = Variable('a')
-    literals = None
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.variable = Variable('a')
+        self.literals = None
 
     def setUp(self):
         self.literals = [Literal(self.variable)]
