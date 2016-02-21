@@ -29,4 +29,7 @@ class Literal:
         self._variable = variable
 
     def __str__(self):
-        return self.variable if self.positive else ""
+        string = self.variable.__str__()
+        if not self.positive:
+            string = "not " + string
+        return string

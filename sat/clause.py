@@ -35,4 +35,4 @@ class Clause:
         self._literals = literals
 
     def __str__(self):
-        return self.literals
+        return "[{0}]".format(", ".join([literal.__str__() for literal in self.literals]))

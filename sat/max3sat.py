@@ -42,4 +42,7 @@ class MAX3SAT:
         self._clauses = clauses
 
     def __str__(self):
-        return ""
+        return "Variables: {0};\nClauses: {1}.".format(
+            ", ".join([variable.__str__() for variable in self.variables]),
+            ", ".join([clause.__str__() for clause in self.clauses])
+        )
