@@ -1,4 +1,5 @@
 from sat.clause import Clause
+from sat.valuation import Valuation
 from sat.variable import Variable
 
 
@@ -17,6 +18,12 @@ class MAX3SAT:
 
         self._variables = variables
         self._clauses = clauses
+
+    def get_num_satisfied_clauses(self, valuation):
+        if not isinstance(valuation, Valuation):
+            raise TypeError("'valuation' must be a Valuation instance.")
+
+        return len([c for c in self.clauses if c.is_satisfied(valuation)])
 
     @property
     def variables(self):

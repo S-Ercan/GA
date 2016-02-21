@@ -3,27 +3,47 @@ import unittest
 from sat.clause import Clause
 from sat.literal import Literal
 from sat.max3sat import MAX3SAT
+from sat.valuation import Valuation
 from sat.variable import Variable
 
 
 class TestMAX3SAT(unittest.TestCase):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.variable = Variable('a')
-        self.literals = None
-
     def setUp(self):
-        self.literals = [Literal(self.variable)]
+        self.v1 = Variable('a')
+        self.v2 = Variable('b')
+        self.variables = [self.v1, self.v2]
+
+        self.l1 = Literal(self.v1, positive=True)
+        self.l2 = Literal(self.v2, positive=False)
+        self.literals = [self.l1, self.l2]
+
+        self.c1 = Clause([self.l1])
+        self.c2 = Clause([self.l2])
+        self.clauses = [self.c1, self.c2]
+
+        self.m = MAX3SAT(self.variables, self.clauses)
 
     def test_create_with_invalid_variables_type_fails(self):
-        self.assertRaises(TypeError, lambda l: MAX3SAT({}, [Clause(self.literals)]))
+        self.assertRaises(TypeError, lambda l: MAX3SAT({}, self.clauses))
 
     def test_create_with_invalid_variables_fails(self):
-        self.assertRaises(TypeError, lambda l: MAX3SAT([Literal(Variable('a'))], [Clause(self.literals)]))
+        self.assertRaises(TypeError, lambda l: MAX3SAT([Literal(Variable('a'))], self.clauses))
 
     def test_create_with_invalid_clauses_type_fails(self):
         self.assertRaises(TypeError, lambda l: MAX3SAT(self.variables, {}))
 
     def test_create_with_invalid_clauses_fails(self):
         self.assertRaises(TypeError, lambda l: MAX3SAT(self.variables, [Literal(self.variable)]))
+
+    def test_invalid_valuation_satisfies_zero_clauses(self):
+        v = Valuation({self.v1: False, self.v2: True})
+        self.assertEquals(0, self.m.get_num_satisfied_clauses(v))
+
+    def test_valid_valuation_satisfies_one_clause(self):
+        v = Valuation({self.v1: True, self.v2: True})
+        self.assertEqual(1, self.m.get_num_satisfied_clauses(v))
+
+    def test_valid_valuation_satisfies_all_clauses(self):
+        v = Valuation({self.v1: True, self.v2: False})
+        self.assertEqual(2, self.m.get_num_satisfied_clauses(v))
