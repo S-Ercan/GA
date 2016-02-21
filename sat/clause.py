@@ -11,7 +11,7 @@ class Clause:
         if not all(isinstance(l, Literal) for l in literals):
             raise TypeError("All elements in 'literals' must be Literal instances.")
 
-        self.literals = literals
+        self._literals = literals
 
     def is_satisfied(self, valuation):
         """
@@ -25,6 +25,14 @@ class Clause:
             if valuation.get_value_for_literal(literal):
                 return True
         return False
+
+    @property
+    def literals(self):
+        return self._literals
+
+    @literals.setter
+    def literals(self, literals):
+        self._literals = literals
 
     def __str__(self):
         return self.literals
