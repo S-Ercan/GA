@@ -28,13 +28,19 @@ class TestMAX3SAT(unittest.TestCase):
         self.assertRaises(TypeError, lambda l: MAX3SAT({}, self.clauses))
 
     def test_create_with_invalid_variables_fails(self):
-        self.assertRaises(TypeError, lambda l: MAX3SAT([Literal(Variable('a'))], self.clauses))
+        self.assertRaises(TypeError, lambda l: MAX3SAT([self.l1], self.clauses))
 
     def test_create_with_invalid_clauses_type_fails(self):
         self.assertRaises(TypeError, lambda l: MAX3SAT(self.variables, {}))
 
     def test_create_with_invalid_clauses_fails(self):
-        self.assertRaises(TypeError, lambda l: MAX3SAT(self.variables, [Literal(self.variable)]))
+        self.assertRaises(TypeError, lambda l: MAX3SAT(self.variables, [self.l1]))
+
+    def test_create_sets_variables(self):
+        self.assertEqual(self.variables, self.m.variables)
+
+    def test_create_sets_clauses(self):
+        self.assertEqual(self.clauses, self.m.clauses)
 
     def test_invalid_valuation_satisfies_zero_clauses(self):
         v = Valuation({self.v1: False, self.v2: True})
