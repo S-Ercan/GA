@@ -28,6 +28,20 @@ class TestValuation(unittest.TestCase):
         v = Valuation(mapping)
         self.assertEqual(mapping, v.valuation)
 
+    def test_get_value_for_variable_returns_correct_value(self):
+        value = False
+        mapping = {self.variable: value}
+        v = Valuation(mapping)
+
+        self.assertEqual(value, v.get_value_for_variable(self.variable))
+
+    def test_set_value_for_variable_sets_value(self):
+        mapping = {self.variable: False}
+        v = Valuation(mapping)
+
+        v.set_value_for_variable(self.variable, True)
+        self.assertEqual(True, v.get_value_for_variable(self.variable))
+
     def test_get_value_for_literal_returns_correct_value(self):
         value = False
         mapping = {self.variable: value}
@@ -42,7 +56,7 @@ class TestValuation(unittest.TestCase):
 
         self.assertEqual(not value, v.get_value_for_literal(Literal(self.variable, positive=False)))
 
-    def test_set_value_for_literal_returns_correct_value(self):
+    def test_set_value_for_literal_sets_value(self):
         mapping = {self.variable: False}
         v = Valuation(mapping)
 
