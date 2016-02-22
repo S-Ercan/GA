@@ -15,7 +15,7 @@ class Variable:
         self._value = value
 
     def __hash__(self):
-        return hash((self.value))
+        return hash(self.value)
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):

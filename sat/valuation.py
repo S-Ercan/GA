@@ -1,9 +1,11 @@
+import random
+
 from sat.literal import Literal
 from sat.variable import Variable
 
 
 class Valuation:
-    """ Contains a 'Literal -> bool' mapping, representing a truth assignment.
+    """ Contains a 'Variable -> bool' mapping, representing a truth assignment.
     """
 
     def __init__(self, valuation):
@@ -15,6 +17,16 @@ class Valuation:
             raise TypeError("The values of 'variables' must be of type bool.")
 
         self._valuation = valuation
+
+    @classmethod
+    def init_random_from_variables(cls, variables):
+        if not isinstance(variables, list):
+            raise TypeError("'variables' must be a list.")
+        if not all(isinstance(v, Variable) for v in variables):
+            raise TypeError("'All elements of 'variables' must be Variable instances.'")
+
+        valuation = {v: bool(random.getrandbits(1)) for v in variables}
+        return cls(valuation)
 
     def get_value_for_literal(self, literal):
         """
