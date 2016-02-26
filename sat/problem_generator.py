@@ -20,6 +20,7 @@ class ProblemGenerator:
         self.clauses = None
 
     def generate_problem(self):
+        # todo: prevent duplicate clauses
         self.variables = self.generate_variables()
         self.clauses = self.generate_clauses()
         return MAX3SAT(self.variables, self.clauses)
@@ -28,8 +29,8 @@ class ProblemGenerator:
         num_variables = random.randint(self.min_num_variables, self.max_num_variables)
         variables = []
 
-        for i in range(num_variables - 1):
-            variable = Variable(random.choice(string.ascii_lowercase))
+        for i in range(num_variables):
+            variable = Variable(string.ascii_lowercase[i])
             if variable not in variables:
                 variables.append(variable)
 
@@ -39,14 +40,20 @@ class ProblemGenerator:
         num_clauses = random.randint(self.min_num_clauses, self.max_num_clauses)
         clauses = []
 
-        for i in range(num_clauses - 1):
+        for i in range(num_clauses):
+            variables = []
             literals = []
             for j in range(self.variables_per_clause):
-                variable = random.choice(self.variables)
+                # Choose a random variable to include in clause
+                variable = random.choice([v for v in self.variables if v not in variables])
+                # Randomly determine whether to include variable
+                # as a positive or negative literal in clause
                 if random.randint(0, 1) == 0:
                     literal = Literal(variable, positive=True)
                 else:
                     literal = Literal(variable, positive=False)
+
+                variables.append(variable)
                 literals.append(literal)
             clauses.append(Clause(literals))
 
