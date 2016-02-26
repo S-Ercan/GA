@@ -1,8 +1,8 @@
 import unittest
 
+from ga.valuation import Valuation
 from sat.clause import Clause
 from sat.literal import Literal
-from sat.valuation import Valuation
 from sat.variable import Variable
 
 

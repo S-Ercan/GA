@@ -1,9 +1,9 @@
 import unittest
 
+from ga.valuation import Valuation
 from sat.clause import Clause
 from sat.literal import Literal
 from sat.max3sat import MAX3SAT
-from sat.valuation import Valuation
 from sat.variable import Variable
 
 

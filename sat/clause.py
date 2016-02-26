@@ -1,5 +1,5 @@
+from ga.valuation import Valuation
 from sat.literal import Literal
-from sat.valuation import Valuation
 
 
 class Clause:
