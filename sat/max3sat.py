@@ -4,6 +4,11 @@ from sat.variable import Variable
 
 
 class MAX3SAT:
+    """ Representation of a MAX-3SAT problem instance.
+        Contains:
+            - a list of variables
+            - a list of clauses, which in turn contain literals
+    """
 
     def __init__(self, variables, clauses):
         if not isinstance(variables, list):
@@ -20,6 +25,10 @@ class MAX3SAT:
         self._clauses = clauses
 
     def get_num_satisfied_clauses(self, valuation):
+        """
+        :param valuation: truth assignment to use
+        :return: number of clauses satisfied by the given valuation
+        """
         if not isinstance(valuation, Valuation):
             raise TypeError("'valuation' must be a Valuation instance.")
 

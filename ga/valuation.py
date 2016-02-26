@@ -64,6 +64,8 @@ class Valuation:
         self.valuation[literal.variable] = value
 
     def change_value_for_random_variable(self):
+        """ Changes the value for a randomly selected variable.
+        """
         variable = random.choice(list(self.valuation))
         current_value = self.get_value_for_variable(variable)
         self.set_value_for_variable(variable, not current_value)

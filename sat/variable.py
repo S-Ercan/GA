@@ -1,4 +1,6 @@
 class Variable:
+    """ Represents a variable in a MAX-3SAT problem.
+    """
 
     def __init__(self, value):
         if not str.isalpha(value):

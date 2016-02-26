@@ -2,6 +2,9 @@ from sat.variable import Variable
 
 
 class Literal:
+    """ Represents a literal in a MAX-3SAT clause.
+        Contains a variable and whether it is a positive or negative literal.
+    """
 
     def __init__(self, variable, positive=True):
         if not isinstance(positive, bool):

@@ -8,6 +8,8 @@ from sat.variable import Variable
 
 
 class ProblemGenerator:
+    """ Randomly generates MAX-3SAT problem instances.
+    """
 
     def __init__(self):
         self.variables_per_clause = 3
