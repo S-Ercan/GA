@@ -21,7 +21,10 @@ class GA:
         """ Works toward a solution for the given problem
             until either the fitness criterion has been met
             or the maximum number of iterations has been reached.
-        :return: best solution found with its corresponding fitness measure
+        :return:
+            - number of iterations executed
+            - best solution found
+            - fitness of best solution
         """
         iteration = 0
         solution = None
@@ -34,6 +37,7 @@ class GA:
 
         print("Terminated at iteration: {0};\nSolution: {1};\nFitness: {2}.".
               format(iteration, solution, fitness))
+        return iteration, solution, fitness
 
     def create_next_generation(self):
         """ Generates a population of candidate solutions if it doesn't exist,
