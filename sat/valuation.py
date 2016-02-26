@@ -64,7 +64,7 @@ class Valuation:
         self.valuation[literal.variable] = value
 
     def change_value_for_random_variable(self):
-        variable = random.choice(self.valuation.keys())
+        variable = random.choice(list(self.valuation))
         current_value = self.get_value_for_variable(variable)
         self.set_value_for_variable(variable, not current_value)
 
@@ -75,3 +75,10 @@ class Valuation:
     @valuation.setter
     def valuation(self, valuation):
         self._valuation = valuation
+
+    def __str__(self):
+        return "{{{0}}}".format(
+            ", ".join(
+                ["{0}: {1}".format(k, v) for k, v in sorted(self.valuation.items())]
+            )
+        )

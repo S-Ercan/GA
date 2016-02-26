@@ -71,3 +71,15 @@ class TestValuation(unittest.TestCase):
     def test_init_random_creates_valuation_with_bools(self):
         v = Valuation.init_random_from_variables(self.variables)
         self.assertTrue(all(isinstance(k, bool) for k in v.valuation.values()))
+
+    def test_change_random_variable_changes_exactly_one_variable(self):
+        v = Valuation.init_random_from_variables(self.variables)
+        original_valuation = v.valuation.copy()
+        v.change_value_for_random_variable()
+        new_valuation = v.valuation
+
+        changed_variable = [
+            variable for variable in self.variables
+            if not original_valuation.get(variable) == new_valuation.get(variable)
+        ]
+        self.assertEqual(1, len(changed_variable))

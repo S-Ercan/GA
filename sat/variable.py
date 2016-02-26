@@ -26,5 +26,11 @@ class Variable:
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    def __lt__(self, other):
+        if isinstance(other, self.__class__):
+            return self.value < other.value
+        else:
+            raise TypeError("Cannot compare a Variable instance to an instance of different type.")
+
     def __str__(self):
         return self.value
