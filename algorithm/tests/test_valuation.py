@@ -1,6 +1,6 @@
 import unittest
 
-from ga.valuation import Valuation
+from algorithm.valuation import Valuation
 from sat.literal import Literal
 from sat.variable import Variable
 

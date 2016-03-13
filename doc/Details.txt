@@ -1,9 +1,5 @@
 Genetic algorithms
 
-Application:
-    Scheduling problem
-    Generate random problem instances
-
 Algorithm:
     Represent population of candidate solutions as array of values
     While termination condition is not met:
