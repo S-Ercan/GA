@@ -73,7 +73,7 @@ class GA:
     def generate_next_generation(self, parents):
         next_generation = []
 
-        for index, parent1 in enumerate(parents[:len(parents) / 2]):
+        for index, parent1 in enumerate(parents[:int(len(parents) / 2)]):
             if not index % 2 == 0:
                 continue
 
@@ -91,7 +91,7 @@ class GA:
         child1_valuation = {}
         child2_valuation = {}
         # Get problem variables
-        variables = parent1_valuation.keys()
+        variables = list(parent1_valuation)
         # Determine crossover index
         crossover_index = random.randint(0, len(parent1.valuation) - 1)
 
