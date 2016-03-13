@@ -1,3 +1,5 @@
+from operator import itemgetter
+
 from algorithm.valuation import Valuation
 from sat.max3sat import MAX3SAT
 
@@ -12,6 +14,7 @@ class GA:
         self.iterations = iterations
         self.population_size = population_size
         self.fitness_threshold = fitness_threshold
+        self.p_mutation = 0.01
 
         self.population = []
 
@@ -46,17 +49,19 @@ class GA:
         """ Determines the best solution in the current population.
         :return: best candidate solution with corresponding fitness measure
         """
-        fitness_to_candidate_mapping = {}
+        candidate_to_fitness_mapping = {}
 
         for candidate in self.population:
             candidate_fitness = self.evaluate_candidate_fitness(candidate)
-            fitness_to_candidate_mapping[candidate_fitness] = candidate
+            candidate_to_fitness_mapping[candidate] = candidate_fitness
+        candidate_to_fitness_mapping = sorted(candidate_to_fitness_mapping.items(), key=itemgetter(1), reverse=True)
+        print candidate_to_fitness_mapping
 
         fittest_candidates = [
-            fitness_to_candidate_mapping[k]
-            for k in sorted(fitness_to_candidate_mapping)[:int(len(fitness_to_candidate_mapping) / 2)]
+            k[0] for k in candidate_to_fitness_mapping[:int(len(candidate_to_fitness_mapping) / 2)]
         ]
 
+        print fittest_candidates
         return fittest_candidates
 
     def evaluate_candidate_fitness(self, candidate):
@@ -80,7 +85,19 @@ class GA:
         self.population = next_generation
 
     def create_offspring(self, parent1, parent2):
-        return [parent1, parent2]
+        child1 = parent1
+        child2 = parent2
+
+        child1 = self.mutate(child1)
+        child2 = self.mutate(child2)
+
+        return [child1, child2]
+
+    def mutate(self, candidate):
+        valuation = candidate.valuation
+        for variable, value in valuation.items():
+            pass
+        return candidate
 
     @property
     def max3sat(self):
