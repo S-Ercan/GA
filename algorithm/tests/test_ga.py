@@ -1,6 +1,6 @@
 import unittest
 
-from ga.ga import GA
+from algorithm.ga import GA
 from sat.problem_generator import ProblemGenerator
 
 
