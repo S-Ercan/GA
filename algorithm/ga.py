@@ -1,3 +1,4 @@
+import random
 from operator import itemgetter
 
 from algorithm.valuation import Valuation
@@ -55,13 +56,11 @@ class GA:
             candidate_fitness = self.evaluate_candidate_fitness(candidate)
             candidate_to_fitness_mapping[candidate] = candidate_fitness
         candidate_to_fitness_mapping = sorted(candidate_to_fitness_mapping.items(), key=itemgetter(1), reverse=True)
-        print candidate_to_fitness_mapping
 
         fittest_candidates = [
             k[0] for k in candidate_to_fitness_mapping[:int(len(candidate_to_fitness_mapping) / 2)]
         ]
 
-        print fittest_candidates
         return fittest_candidates
 
     def evaluate_candidate_fitness(self, candidate):
@@ -85,9 +84,30 @@ class GA:
         self.population = next_generation
 
     def create_offspring(self, parent1, parent2):
-        child1 = parent1
-        child2 = parent2
+        # Get parent valuations
+        parent1_valuation = parent1.valuation
+        parent2_valuation = parent2.valuation
+        # Create valuations for offspring
+        child1_valuation = {}
+        child2_valuation = {}
+        # Get problem variables
+        variables = parent1_valuation.keys()
+        # Determine crossover index
+        crossover_index = random.randint(0, len(parent1.valuation) - 1)
 
+        # Up to and including crossover_index, copy parent1 to child1 and parent2 to child2
+        for i in range(crossover_index + 1):
+            child1_valuation[variables[i]] = parent1_valuation[variables[i]]
+            child2_valuation[variables[i]] = parent2_valuation[variables[i]]
+        # From crossover_index onwards, copy parent2 to child1 and parent1 to child2
+        for i in range(crossover_index + 1, len(parent1_valuation) - 1):
+            child1_valuation[variables[i]] = parent2_valuation[variables[i]]
+            child2_valuation[variables[i]] = parent1_valuation[variables[i]]
+
+        # Create valuations for offspring
+        child1 = Valuation(child1_valuation)
+        child2 = Valuation(child2_valuation)
+        # Apply mutations to offspring
         child1 = self.mutate(child1)
         child2 = self.mutate(child2)
 
@@ -95,8 +115,11 @@ class GA:
 
     def mutate(self, candidate):
         valuation = candidate.valuation
+
         for variable, value in valuation.items():
-            pass
+            if random.uniform(0, 1) < self.p_mutation:
+                valuation.set_value_for_variable(variable, not value)
+
         return candidate
 
     @property
