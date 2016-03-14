@@ -11,10 +11,12 @@ from sat.max3sat import MAX3SAT
 
 class TestGA(unittest.TestCase):
 
-    def test_ga_can_run(self):
+    def setUp(self):
         max3sat = ProblemGenerator().generate_problem()
-        ga = GA(max3sat)
-        ga.run()
+        self.rand_ga = GA(max3sat)
+
+    def test_ga_can_run(self):
+        self.rand_ga.run()
 
     def test_evaluate_fitness_returns_half(self):
         v1 = Variable('a')
@@ -38,3 +40,20 @@ class TestGA(unittest.TestCase):
 
         ga = GA(max3sat)
         self.assertEqual(1, ga.evaluate_candidate_fitness(valuation))
+
+    def test_get_fitness_for_candidates_returns_list(self):
+        candidate_fitnesses = self.rand_ga.get_fitness_for_candidates()
+
+        self.assertEqual(list, type(candidate_fitnesses))
+
+    def test_create_offspring_creates_two_children(self):
+        v1 = Variable('a')
+        c1 = Clause([Literal(v1)])
+        max3sat = MAX3SAT([v1], [c1])
+
+        valuation1 = Valuation.init_random_from_variables([v1])
+        valuation2 = Valuation.init_random_from_variables([v1])
+
+        ga = GA(max3sat)
+        offspring = ga.create_offspring(valuation1, valuation2)
+        self.assertEqual(2, len(offspring))

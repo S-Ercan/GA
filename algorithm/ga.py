@@ -38,7 +38,7 @@ class GA:
             solution = fittest_candidate[0]
             fitness = fittest_candidate[1]
 
-            self.generate_next_generation(candidate_fitnesses)
+            self.population = self.generate_next_generation(candidate_fitnesses)
             iteration += 1
 
         print("Terminated at iteration: {0};\nSolution: {1};\nFitness: {2}.".format(iteration, solution, fitness))
@@ -93,7 +93,7 @@ class GA:
 
             next_generation.extend([parent1, parent2])
 
-        self.population = next_generation
+        return next_generation
 
     def create_offspring(self, parent1, parent2):
         """
