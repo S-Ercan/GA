@@ -9,10 +9,10 @@ class GA:
     """ Genetic algorithm for the MAX-3SAT problem.
     """
 
-    def __init__(self, max3sat, iterations=25, population_size=10, fitness_threshold=0.75):
+    def __init__(self, max3sat, max_iterations=25, population_size=16, fitness_threshold=0.75):
         self._max3sat = max3sat
 
-        self.iterations = iterations
+        self.max_iterations = max_iterations
         self.population_size = population_size
         self.fitness_threshold = fitness_threshold
         self.p_mutation = 0.01
@@ -28,17 +28,21 @@ class GA:
         :return: best solution found with its corresponding fitness measure
         """
         iteration = 0
-        # solution = None
+        solution = None
         fitness = 0
 
         self.generate_population()
-        while fitness < self.fitness_threshold and iteration < self.iterations:
-            fittest_candidates = self.get_fittest_candidates()
-            self.generate_next_generation(fittest_candidates)
+        while fitness < self.fitness_threshold and iteration < self.max_iterations:
+            candidate_fitnesses = self.get_fitness_for_candidates()
+
+            fittest_candidate = candidate_fitnesses[0]
+            solution = fittest_candidate[0]
+            fitness = fittest_candidate[1]
+
+            self.generate_next_generation(candidate_fitnesses)
             iteration += 1
 
-        # print("Terminated at iteration: {0};\nSolution: {1};\nFitness: {2}.".
-        #       format(iteration, solution, fitness))
+        print("Terminated at iteration: {0};\nSolution: {1};\nFitness: {2}.".format(iteration, solution, fitness))
 
     def generate_population(self):
         """ Generates a population of random candidate solutions.
@@ -46,9 +50,9 @@ class GA:
         for i in range(self.population_size):
             self.population.append(Valuation.init_random_from_variables(self.max3sat.variables))
 
-    def get_fittest_candidates(self):
-        """ Determines the best solution in the current population.
-        :return: best candidate solution with corresponding fitness measure
+    def get_fitness_for_candidates(self):
+        """ Determines the fitness of each candidate in self.population.
+        :return: "solution -> fitness" mapping
         """
         candidate_to_fitness_mapping = {}
 
@@ -57,11 +61,7 @@ class GA:
             candidate_to_fitness_mapping[candidate] = candidate_fitness
         candidate_to_fitness_mapping = sorted(candidate_to_fitness_mapping.items(), key=itemgetter(1), reverse=True)
 
-        fittest_candidates = [
-            k[0] for k in candidate_to_fitness_mapping[:int(len(candidate_to_fitness_mapping) / 2)]
-        ]
-
-        return fittest_candidates
+        return candidate_to_fitness_mapping
 
     def evaluate_candidate_fitness(self, candidate):
         """
@@ -72,14 +72,24 @@ class GA:
 
     def generate_next_generation(self, parents):
         next_generation = []
+        max_fitness = parents[0][1]
 
-        for index, parent1 in enumerate(parents[:int(len(parents) / 2)]):
-            if not index % 2 == 0:
-                continue
+        parent1 = None
+        parent2 = None
+        while len(next_generation) < self.population_size:
+            while parent1 is None:
+                parent1_candidate = random.choice(parents)
+                if random.randrange(0, 1) < (parent1_candidate[1]) / max_fitness:
+                    parent1 = parent1_candidate[0]
+            parent1 = None
 
-            parent2 = parents[index + 1]
-            offspring = self.create_offspring(parent1, parent2)
-            next_generation.extend(offspring)
+            while parent2 is None:
+                parent2_candidate = random.choice(parents)
+                if random.randrange(0, 1) < parent2_candidate[1] / max_fitness:
+                    parent2 = parent2_candidate[0]
+            parent2 = None
+
+            next_generation.extend([parent1, parent2])
 
         self.population = next_generation
 
@@ -118,7 +128,7 @@ class GA:
 
         for variable, value in valuation.items():
             if random.uniform(0, 1) < self.p_mutation:
-                valuation.set_value_for_variable(variable, not value)
+                candidate.set_value_for_variable(variable, not value)
 
         return candidate
 
