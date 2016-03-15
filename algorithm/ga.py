@@ -17,7 +17,7 @@ class GA:
         self.fitness_threshold = fitness_threshold
         self.p_mutation = 0.01
 
-        self.population = []
+        self._population = []
 
         print("Initialized GA with problem:\n{0}\n.".format(self.max3sat))
 
@@ -30,7 +30,7 @@ class GA:
         solution = None
         fitness = 0
 
-        self.generate_population()
+        self.population = self.generate_population()
         while fitness < self.fitness_threshold and iteration < self.max_iterations:
             candidate_fitnesses = self.get_fitness_for_candidates()
 
@@ -46,8 +46,10 @@ class GA:
     def generate_population(self):
         """ Generates a population of random candidate solutions.
         """
+        population = []
         for i in range(self.population_size):
-            self.population.append(Valuation.init_random_from_variables(self.max3sat.variables))
+            population.append(Valuation.init_random_from_variables(self.max3sat.variables))
+        return population
 
     def get_fitness_for_candidates(self):
         """ Determines the fitness of each candidate in self.population.
@@ -83,15 +85,15 @@ class GA:
                 parent1_candidate = random.choice(parents)
                 if random.randrange(0, 1) < (parent1_candidate[1] / max_fitness):
                     parent1 = parent1_candidate[0]
-            parent1 = None
 
             while parent2 is None:
                 parent2_candidate = random.choice(parents)
                 if random.randrange(0, 1) < (parent2_candidate[1] / max_fitness):
                     parent2 = parent2_candidate[0]
-            parent2 = None
 
             next_generation.extend([parent1, parent2])
+            parent1 = None
+            parent2 = None
 
         return next_generation
 
@@ -158,3 +160,15 @@ class GA:
         if not isinstance(max3sat, MAX3SAT):
             raise TypeError("'max3sat' must be a MAX3SAT instance.")
         self._max3sat = max3sat
+
+    @property
+    def population(self):
+        return self._population
+
+    @population.setter
+    def population(self, population):
+        if not isinstance(population, list):
+            raise TypeError("'population' must be a MAX3SAT instance.")
+        if not all(isinstance(p, Valuation) for p in population):
+            raise TypeError("'population' must be a list of Valuation instances.")
+        self._population = population

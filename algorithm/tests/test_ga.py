@@ -12,13 +12,30 @@ from sat.max3sat import MAX3SAT
 class TestGA(unittest.TestCase):
 
     def setUp(self):
-        max3sat = ProblemGenerator().generate_problem()
-        self.rand_ga = GA(max3sat)
+        self.rand_max3sat = ProblemGenerator().generate_problem()
+        self.rand_ga = GA(self.rand_max3sat)
+
+    def test_create_ga_without_problem_fails(self):
+        self.assertRaises(TypeError, lambda l: GA())
 
     def test_ga_can_run(self):
         self.rand_ga.run()
 
-    def test_evaluate_fitness_returns_half(self):
+    def test_generate_population_returns_list(self):
+        population = self.rand_ga.generate_population()
+        self.assertTrue(isinstance(population, list))
+
+    def test_generate_population_generates_population_of_correct_size(self):
+        population_size = 32
+        ga = GA(self.rand_max3sat, population_size=population_size)
+        population = ga.generate_population()
+        self.assertEqual(population_size, len(population))
+
+    def test_generate_population_generates_population_of_valuation_instances(self):
+        population = self.rand_ga.generate_population()
+        self.assertTrue(all(isinstance(p, Valuation) for p in population))
+
+    def test_evaluate_candidate_fitness_returns_half(self):
         v1 = Variable('a')
         c1 = Clause([Literal(v1, positive=True)])
         c2 = Clause([Literal(v1, positive=False)])
@@ -29,7 +46,7 @@ class TestGA(unittest.TestCase):
         ga = GA(max3sat)
         self.assertEqual(0.5, ga.evaluate_candidate_fitness(valuation))
 
-    def test_evaluate_fitness_returns_one(self):
+    def test_evaluate_candidate_fitness_returns_one(self):
         v1 = Variable('a')
         v2 = Variable('b')
         c1 = Clause([Literal(v1, positive=True)])
@@ -42,9 +59,25 @@ class TestGA(unittest.TestCase):
         self.assertEqual(1, ga.evaluate_candidate_fitness(valuation))
 
     def test_get_fitness_for_candidates_returns_list(self):
+        population = self.rand_ga.generate_population()
+        self.rand_ga.population = population
         candidate_fitnesses = self.rand_ga.get_fitness_for_candidates()
 
         self.assertEqual(list, type(candidate_fitnesses))
+
+    def test_get_fitness_for_candidates_returns_list_containing_valuations(self):
+        population = self.rand_ga.generate_population()
+        self.rand_ga.population = population
+        candidate_fitnesses = self.rand_ga.get_fitness_for_candidates()
+
+        self.assertTrue(all(isinstance(k[0], Valuation) for k in candidate_fitnesses))
+
+    def test_get_fitness_for_candidates_returns_list_containing_floats(self):
+        population = self.rand_ga.generate_population()
+        self.rand_ga.population = population
+        candidate_fitnesses = self.rand_ga.get_fitness_for_candidates()
+
+        self.assertTrue(all(isinstance(k[1], float) for k in candidate_fitnesses))
 
     def test_create_offspring_creates_two_children(self):
         v1 = Variable('a')
