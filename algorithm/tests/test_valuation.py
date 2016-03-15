@@ -78,8 +78,8 @@ class TestValuation(unittest.TestCase):
         v.change_value_for_random_variable()
         new_valuation = v.valuation
 
-        changed_variable = [
+        changed_variables = [
             variable for variable in self.variables
             if not original_valuation.get(variable) == new_valuation.get(variable)
         ]
-        self.assertEqual(1, len(changed_variable))
+        self.assertEqual(1, len(changed_variables))
