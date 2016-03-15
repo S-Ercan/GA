@@ -89,7 +89,8 @@ class GA:
         """
         if not isinstance(candidate, Valuation):
             raise TypeError("'candidate' must be a Valuation instance.")
-        return self.maxsat.get_num_satisfied_clauses(candidate) / len(self.maxsat.clauses)
+        # Force division result to be a float by multiplying denominator with a float
+        return self.maxsat.get_num_satisfied_clauses(candidate) / (len(self.maxsat.clauses) * 1.0)
 
     def generate_next_generation(self, population):
         """
