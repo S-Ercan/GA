@@ -18,8 +18,55 @@ class TestGA(unittest.TestCase):
     def test_create_ga_without_problem_fails(self):
         self.assertRaises(TypeError, lambda l: GA())
 
-    def test_ga_can_run(self):
-        self.rand_ga.run()
+    def test_ga_achieves_fitness_of_half(self):
+        v1 = Variable('a')
+        c1 = Clause([Literal(v1, positive=True)])
+        c2 = Clause([Literal(v1, positive=False)])
+        max3sat = MAX3SAT([v1], [c1, c2])
+
+        ga = GA(max3sat)
+        _, fitness, _ = ga.run()
+
+        self.assertEqual(0.5, fitness)
+
+    def test_ga_achieves_fitness_of_one(self):
+        v1 = Variable('a')
+        c1 = Clause([Literal(v1)])
+        max3sat = MAX3SAT([v1], [c1])
+
+        ga = GA(max3sat)
+        _, fitness, _ = ga.run()
+
+        self.assertEqual(1, fitness)
+
+    def test_ga_uses_all_iterations_for_unsatisfiable_problem_if_below_threshold(self):
+        v1 = Variable('a')
+        c1 = Clause([Literal(v1, positive=True)])
+        c2 = Clause([Literal(v1, positive=False)])
+        max3sat = MAX3SAT([v1], [c1, c2])
+
+        ga = GA(max3sat)
+        _, _, iteration = ga.run()
+        self.assertEqual(iteration, ga.max_iterations)
+
+    def test_ga_uses_one_iteration_for_unsatisfiable_problem_if_not_below_threshold(self):
+        v1 = Variable('a')
+        c1 = Clause([Literal(v1, positive=True)])
+        c2 = Clause([Literal(v1, positive=False)])
+        max3sat = MAX3SAT([v1], [c1, c2])
+
+        ga = GA(max3sat, fitness_threshold=0.5)
+        _, _, iteration = ga.run()
+        self.assertEqual(1, iteration)
+
+    def test_ga_uses_one_iteration_for_trivially_satisfiable_problem(self):
+        v1 = Variable('a')
+        c1 = Clause([Literal(v1)])
+        max3sat = MAX3SAT([v1], [c1])
+
+        ga = GA(max3sat)
+        _, _, iteration = ga.run()
+        self.assertEqual(1, iteration)
 
     def test_generate_population_returns_list(self):
         population = self.rand_ga.generate_population()

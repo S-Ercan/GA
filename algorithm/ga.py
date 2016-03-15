@@ -25,6 +25,9 @@ class GA:
         """ Works toward a solution for the given problem
             until either the fitness criterion has been met
             or the maximum number of iterations has been reached.
+            :return:    tuple containing the best solution,
+                        its corresponding fitness value,
+                        and the number of iterations executed
         """
         iteration = 0
         solution = None
@@ -42,6 +45,7 @@ class GA:
             iteration += 1
 
         print("Terminated at iteration: {0};\nSolution: {1};\nFitness: {2}.".format(iteration, solution, fitness))
+        return solution, fitness, iteration
 
     def generate_population(self):
         """ Generates a population of random candidate solutions.
