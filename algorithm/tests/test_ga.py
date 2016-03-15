@@ -127,13 +127,64 @@ class TestGA(unittest.TestCase):
         self.assertTrue(all(isinstance(k[1], float) for k in candidate_fitnesses))
 
     def test_create_offspring_creates_two_children(self):
-        v1 = Variable('a')
-        c1 = Clause([Literal(v1)])
-        maxsat = MAXSAT([v1], [c1])
+        valuation1 = Valuation.init_random_from_variables(self.rand_maxsat.variables)
+        valuation2 = Valuation.init_random_from_variables(self.rand_maxsat.variables)
 
-        valuation1 = Valuation.init_random_from_variables([v1])
-        valuation2 = Valuation.init_random_from_variables([v1])
-
-        ga = GA(maxsat)
-        offspring = ga.create_offspring(valuation1, valuation2)
+        offspring = self.rand_ga.create_offspring(valuation1, valuation2)
         self.assertEqual(2, len(offspring))
+
+    def test_create_offspring_creates_first_child_correctly_until_crossover_point(self):
+        variables = self.rand_maxsat.variables
+        crossover_index = int(len(variables) / 2)
+        valuation1 = Valuation.init_random_from_variables(variables)
+        valuation2 = Valuation.init_random_from_variables(variables)
+
+        offspring = self.rand_ga.create_offspring(valuation1, valuation2, crossover_index=crossover_index)
+        child1 = offspring[0]
+
+        self.assertTrue(
+            all(child1.get_value_for_variable(v) == valuation1.get_value_for_variable(v)
+                for v in variables[:crossover_index + 1])
+        )
+
+    def test_create_offspring_creates_first_child_correctly_after_crossover_point(self):
+        variables = self.rand_maxsat.variables
+        crossover_index = int(len(variables) / 2)
+        valuation1 = Valuation.init_random_from_variables(variables)
+        valuation2 = Valuation.init_random_from_variables(variables)
+
+        offspring = self.rand_ga.create_offspring(valuation1, valuation2, crossover_index=crossover_index)
+        child1 = offspring[0]
+
+        self.assertTrue(
+            all(child1.get_value_for_variable(v) == valuation2.get_value_for_variable(v)
+                for v in variables[crossover_index + 1:])
+        )
+
+    def test_create_offspring_creates_second_child_correctly_until_crossover_point(self):
+        variables = self.rand_maxsat.variables
+        crossover_index = int(len(variables) / 2)
+        valuation1 = Valuation.init_random_from_variables(variables)
+        valuation2 = Valuation.init_random_from_variables(variables)
+
+        offspring = self.rand_ga.create_offspring(valuation1, valuation2, crossover_index=crossover_index)
+        child2 = offspring[1]
+
+        self.assertTrue(
+            all(child2.get_value_for_variable(v) == valuation2.get_value_for_variable(v)
+                for v in variables[:crossover_index + 1])
+        )
+
+    def test_create_offspring_creates_second_child_correctly_after_crossover_point(self):
+        variables = self.rand_maxsat.variables
+        crossover_index = int(len(variables) / 2)
+        valuation1 = Valuation.init_random_from_variables(variables)
+        valuation2 = Valuation.init_random_from_variables(variables)
+
+        offspring = self.rand_ga.create_offspring(valuation1, valuation2, crossover_index=crossover_index)
+        child2 = offspring[1]
+
+        self.assertTrue(
+            all(child2.get_value_for_variable(v) == valuation1.get_value_for_variable(v)
+                for v in variables[crossover_index + 1:])
+        )
