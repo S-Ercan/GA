@@ -76,6 +76,8 @@ class Valuation:
 
     @valuation.setter
     def valuation(self, valuation):
+        if not isinstance(valuation, Valuation):
+            raise TypeError("'valuation' must be a Valuation instance.")
         self._valuation = valuation
 
     def __str__(self):

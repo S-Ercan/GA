@@ -21,6 +21,8 @@ class Literal:
 
     @positive.setter
     def positive(self, positive):
+        if not isinstance(positive, bool):
+            raise TypeError("'positive' must be a bool.")
         self._positive = positive
 
     @property
@@ -29,6 +31,8 @@ class Literal:
 
     @variable.setter
     def variable(self, variable):
+        if not isinstance(variable, Variable):
+            raise TypeError("'variable' must be a Variable instance.")
         self._variable = variable
 
     def __str__(self):

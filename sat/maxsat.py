@@ -40,6 +40,10 @@ class MAXSAT:
 
     @variables.setter
     def variables(self, variables):
+        if not isinstance(variables, list):
+            raise TypeError("'variables' must be a list.")
+        if not all(isinstance(v, Variable) for v in variables):
+            raise TypeError("All elements in 'variables' must be Variable instances.")
         self._variables = variables
 
     @property
@@ -48,6 +52,10 @@ class MAXSAT:
 
     @clauses.setter
     def clauses(self, clauses):
+        if not isinstance(clauses, list):
+            raise TypeError("'clauses' must be a list.")
+        if not all(isinstance(c, Clause) for c in clauses):
+            raise TypeError("All elements in 'clauses' must be Clause instances.")
         self._clauses = clauses
 
     def __str__(self):

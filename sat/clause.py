@@ -32,6 +32,10 @@ class Clause:
 
     @literals.setter
     def literals(self, literals):
+        if not isinstance(literals, list):
+            raise TypeError("'literals' must be a list.")
+        if not all(isinstance(l, Literal) for l in literals):
+            raise TypeError("'literals' must be a list of Literal instances.")
         self._literals = literals
 
     def __str__(self):
