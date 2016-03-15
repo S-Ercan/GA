@@ -82,7 +82,7 @@ class TestGA(unittest.TestCase):
         population = self.rand_ga.generate_population()
         self.assertTrue(all(isinstance(p, Valuation) for p in population))
 
-    def test_evaluate_candidate_fitness_returns_half(self):
+    def test_get_candidate_fitness_returns_half(self):
         v1 = Variable('a')
         c1 = Clause([Literal(v1, positive=True)])
         c2 = Clause([Literal(v1, positive=False)])
@@ -91,9 +91,9 @@ class TestGA(unittest.TestCase):
         valuation = Valuation.init_random_from_variables([v1])
 
         ga = GA(maxsat)
-        self.assertEqual(0.5, ga.evaluate_candidate_fitness(valuation))
+        self.assertEqual(0.5, ga.get_candidate_fitness(valuation))
 
-    def test_evaluate_candidate_fitness_returns_one(self):
+    def test_get_candidate_fitness_returns_one(self):
         v1 = Variable('a')
         v2 = Variable('b')
         c1 = Clause([Literal(v1, positive=True)])
@@ -103,26 +103,26 @@ class TestGA(unittest.TestCase):
         valuation = Valuation({v1: True, v2: False})
 
         ga = GA(maxsat)
-        self.assertEqual(1, ga.evaluate_candidate_fitness(valuation))
+        self.assertEqual(1, ga.get_candidate_fitness(valuation))
 
-    def test_get_fitness_for_candidates_returns_list(self):
+    def test_get_population_fitness_returns_list(self):
         population = self.rand_ga.generate_population()
         self.rand_ga.population = population
-        candidate_fitnesses = self.rand_ga.get_fitness_for_candidates()
+        candidate_fitnesses = self.rand_ga.get_population_fitness()
 
         self.assertEqual(list, type(candidate_fitnesses))
 
-    def test_get_fitness_for_candidates_returns_list_containing_valuations(self):
+    def test_get_population_fitness_returns_list_containing_valuations(self):
         population = self.rand_ga.generate_population()
         self.rand_ga.population = population
-        candidate_fitnesses = self.rand_ga.get_fitness_for_candidates()
+        candidate_fitnesses = self.rand_ga.get_population_fitness()
 
         self.assertTrue(all(isinstance(k[0], Valuation) for k in candidate_fitnesses))
 
-    def test_get_fitness_for_candidates_returns_list_containing_floats(self):
+    def test_get_population_fitness_returns_list_containing_floats(self):
         population = self.rand_ga.generate_population()
         self.rand_ga.population = population
-        candidate_fitnesses = self.rand_ga.get_fitness_for_candidates()
+        candidate_fitnesses = self.rand_ga.get_population_fitness()
 
         self.assertTrue(all(isinstance(k[1], float) for k in candidate_fitnesses))
 

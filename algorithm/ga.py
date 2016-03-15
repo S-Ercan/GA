@@ -48,13 +48,13 @@ class GA:
 
         self.population = self.generate_population()
         while fitness < self.fitness_threshold and iteration < self.max_iterations:
-            candidate_fitnesses = self.get_fitness_for_candidates()
-
-            fittest_candidate = candidate_fitnesses[0]
+            # Get fitness of all candidates in the population
+            candidate_fitness_map = self.get_population_fitness()
+            fittest_candidate = candidate_fitness_map[0]
             solution = fittest_candidate[0]
             fitness = fittest_candidate[1]
-
-            self.population = self.generate_next_generation(candidate_fitnesses)
+            # Evolve population
+            self.population = self.generate_next_generation(candidate_fitness_map)
             iteration += 1
 
         print("Terminated at iteration: {0};\nSolution: {1};\nFitness: {2}.".format(iteration, solution, fitness))
@@ -69,20 +69,20 @@ class GA:
             population.append(Valuation.init_random_from_variables(self.maxsat.variables))
         return population
 
-    def get_fitness_for_candidates(self):
+    def get_population_fitness(self):
         """ Determines the fitness of each candidate solution present in self.population.
         :return: "Valuation -> fitness" mapping, sorted in descending order on fitness.
         """
-        candidate_to_fitness_mapping = {}
+        candidate_fitness_map = {}
 
         for candidate in self.population:
-            candidate_fitness = self.evaluate_candidate_fitness(candidate)
-            candidate_to_fitness_mapping[candidate] = candidate_fitness
-        candidate_to_fitness_mapping = sorted(candidate_to_fitness_mapping.items(), key=itemgetter(1), reverse=True)
+            candidate_fitness = self.get_candidate_fitness(candidate)
+            candidate_fitness_map[candidate] = candidate_fitness
+        candidate_fitness_map = sorted(candidate_fitness_map.items(), key=itemgetter(1), reverse=True)
 
-        return candidate_to_fitness_mapping
+        return candidate_fitness_map
 
-    def evaluate_candidate_fitness(self, candidate):
+    def get_candidate_fitness(self, candidate):
         """
         :param candidate: solution to evaluate
         :return: fitness of candidate
