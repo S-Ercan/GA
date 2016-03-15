@@ -3,16 +3,16 @@ import string
 
 from sat.clause import Clause
 from sat.literal import Literal
-from sat.max3sat import MAX3SAT
+from sat.maxsat import MAXSAT
 from sat.variable import Variable
 
 
 class ProblemGenerator:
-    """ Randomly generates MAX-3SAT problem instances.
+    """ Randomly generates MAXSAT problem instances.
     """
 
     def __init__(self):
-        self.variables_per_clause = 3
+        self.max_variables_per_clause = 3
         self.min_num_variables = 5
         self.max_num_variables = 5
         self.min_num_clauses = 5
@@ -25,7 +25,7 @@ class ProblemGenerator:
         # todo: prevent duplicate clauses
         self.variables = self.generate_variables()
         self.clauses = self.generate_clauses()
-        return MAX3SAT(self.variables, self.clauses)
+        return MAXSAT(self.variables, self.clauses)
 
     def generate_variables(self):
         num_variables = random.randint(self.min_num_variables, self.max_num_variables)
@@ -45,7 +45,7 @@ class ProblemGenerator:
         for i in range(num_clauses):
             variables = []
             literals = []
-            for j in range(self.variables_per_clause):
+            for j in range(self.max_variables_per_clause):
                 # Choose a random variable to include in clause
                 variable = random.choice([v for v in self.variables if v not in variables])
                 # Randomly determine whether to include variable

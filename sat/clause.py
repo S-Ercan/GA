@@ -3,7 +3,7 @@ from sat.literal import Literal
 
 
 class Clause:
-    """ Represents a clause in a MAX-3SAT problem. """
+    """ Represents a clause in a MAXSAT problem. """
 
     def __init__(self, literals):
         if not isinstance(literals, list):

@@ -3,8 +3,8 @@ from sat.clause import Clause
 from sat.variable import Variable
 
 
-class MAX3SAT:
-    """ Representation of a MAX-3SAT problem instance.
+class MAXSAT:
+    """ Representation of a MAXSAT problem instance.
         Contains:
             - a list of variables
             - a list of clauses, which in turn contain literals

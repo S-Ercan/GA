@@ -2,7 +2,7 @@ from sat.variable import Variable
 
 
 class Literal:
-    """ Represents a literal in a MAX-3SAT clause.
+    """ Represents a literal in a MAXSAT clause.
         Contains a variable and whether it is a positive or negative literal.
     """
 

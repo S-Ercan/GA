@@ -2,15 +2,15 @@ import random
 from operator import itemgetter
 
 from algorithm.valuation import Valuation
-from sat.max3sat import MAX3SAT
+from sat.maxsat import MAXSAT
 
 
 class GA:
-    """ Genetic algorithm for the MAX-3SAT problem.
+    """ Genetic algorithm for the MAXSAT problem.
     """
 
-    def __init__(self, max3sat, max_iterations=25, population_size=16, fitness_threshold=0.75):
-        self._max3sat = max3sat
+    def __init__(self, maxsat, max_iterations=25, population_size=16, fitness_threshold=0.75):
+        self._maxsat = maxsat
 
         self.max_iterations = max_iterations
         self.population_size = population_size
@@ -19,7 +19,7 @@ class GA:
 
         self._population = []
 
-        print("Initialized GA with problem:\n{0}\n.".format(self.max3sat))
+        print("Initialized GA with problem:\n{0}\n.".format(self.maxsat))
 
     def run(self):
         """ Works toward a solution for the given problem
@@ -52,7 +52,7 @@ class GA:
         """
         population = []
         for i in range(self.population_size):
-            population.append(Valuation.init_random_from_variables(self.max3sat.variables))
+            population.append(Valuation.init_random_from_variables(self.maxsat.variables))
         return population
 
     def get_fitness_for_candidates(self):
@@ -73,7 +73,7 @@ class GA:
         :param candidate: solution to evaluate
         :return: fitness of candidate
         """
-        return self.max3sat.get_num_satisfied_clauses(candidate) / len(self.max3sat.clauses)
+        return self.maxsat.get_num_satisfied_clauses(candidate) / len(self.maxsat.clauses)
 
     def generate_next_generation(self, parents):
         """
@@ -156,14 +156,14 @@ class GA:
         return candidate
 
     @property
-    def max3sat(self):
-        return self._max3sat
+    def maxsat(self):
+        return self._maxsat
 
-    @max3sat.setter
-    def max3sat(self, max3sat):
-        if not isinstance(max3sat, MAX3SAT):
-            raise TypeError("'max3sat' must be a MAX3SAT instance.")
-        self._max3sat = max3sat
+    @maxsat.setter
+    def maxsat(self, maxsat):
+        if not isinstance(maxsat, MAXSAT):
+            raise TypeError("'maxsat' must be a maxsat instance.")
+        self._maxsat = maxsat
 
     @property
     def population(self):
@@ -172,7 +172,7 @@ class GA:
     @population.setter
     def population(self, population):
         if not isinstance(population, list):
-            raise TypeError("'population' must be a MAX3SAT instance.")
+            raise TypeError("'population' must be a maxsat instance.")
         if not all(isinstance(p, Valuation) for p in population):
             raise TypeError("'population' must be a list of Valuation instances.")
         self._population = population

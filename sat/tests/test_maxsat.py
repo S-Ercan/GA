@@ -3,11 +3,11 @@ import unittest
 from algorithm.valuation import Valuation
 from sat.clause import Clause
 from sat.literal import Literal
-from sat.max3sat import MAX3SAT
+from sat.maxsat import MAXSAT
 from sat.variable import Variable
 
 
-class TestMAX3SAT(unittest.TestCase):
+class TestMAXSAT(unittest.TestCase):
 
     def setUp(self):
         self.v1 = Variable('a')
@@ -22,19 +22,19 @@ class TestMAX3SAT(unittest.TestCase):
         self.c2 = Clause([self.l2])
         self.clauses = [self.c1, self.c2]
 
-        self.m = MAX3SAT(self.variables, self.clauses)
+        self.m = MAXSAT(self.variables, self.clauses)
 
     def test_create_with_invalid_variables_type_fails(self):
-        self.assertRaises(TypeError, lambda l: MAX3SAT({}, self.clauses))
+        self.assertRaises(TypeError, lambda l: MAXSAT({}, self.clauses))
 
     def test_create_with_invalid_variables_fails(self):
-        self.assertRaises(TypeError, lambda l: MAX3SAT([self.l1], self.clauses))
+        self.assertRaises(TypeError, lambda l: MAXSAT([self.l1], self.clauses))
 
     def test_create_with_invalid_clauses_type_fails(self):
-        self.assertRaises(TypeError, lambda l: MAX3SAT(self.variables, {}))
+        self.assertRaises(TypeError, lambda l: MAXSAT(self.variables, {}))
 
     def test_create_with_invalid_clauses_fails(self):
-        self.assertRaises(TypeError, lambda l: MAX3SAT(self.variables, [self.l1]))
+        self.assertRaises(TypeError, lambda l: MAXSAT(self.variables, [self.l1]))
 
     def test_create_sets_variables(self):
         self.assertEqual(self.variables, self.m.variables)

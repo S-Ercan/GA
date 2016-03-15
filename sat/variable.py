@@ -1,5 +1,5 @@
 class Variable:
-    """ Represents a variable in a MAX-3SAT problem.
+    """ Represents a variable in a MAXSAT problem.
     """
 
     def __init__(self, value):
